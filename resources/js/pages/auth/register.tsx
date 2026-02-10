@@ -1,15 +1,18 @@
+import { useState  } from 'react';
 import { Form, Head } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select,SelectContent,SelectItem,SelectTrigger,SelectValue } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
 import { store } from '@/routes/register';
 
 export default function Register() {
+  const [role,setRole]=useState('');
     return (
         <AuthLayout
             title="Create an account"
@@ -42,6 +45,7 @@ export default function Register() {
                                     className="mt-2"
                                 />
                             </div>
+                            mansoor
 
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
@@ -56,6 +60,26 @@ export default function Register() {
                                 />
                                 <InputError message={errors.email} />
                             </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="role">Role</Label>
+                                <Select name="role" value='role' onValueChange={setRole}>
+                                    <SelectTrigger
+                                        id="role"
+                                        tabIndex={3}
+                                        className="w-full"
+                                    >
+                                        <SelectValue placeholder="Select a role" />
+                                    </SelectTrigger>
+
+                                    <SelectContent  position="popper" className="z-50">
+                                        
+                                        <SelectItem value="customer">User</SelectItem>
+                                        <SelectItem value="provider">Provider</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.role} />
+                            </div>
+                            
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
@@ -63,7 +87,7 @@ export default function Register() {
                                     id="password"
                                     type="password"
                                     required
-                                    tabIndex={3}
+                                    tabIndex={4}
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder="Password"
@@ -79,7 +103,7 @@ export default function Register() {
                                     id="password_confirmation"
                                     type="password"
                                     required
-                                    tabIndex={4}
+                                    tabIndex={5}
                                     autoComplete="new-password"
                                     name="password_confirmation"
                                     placeholder="Confirm password"
