@@ -12,7 +12,10 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
-
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use App\Http\Responses\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
+use App\Http\Responses\RegisterResponse;
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -31,6 +34,17 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+
+        $this->app->singleton(
+            LoginResponseContract::class,
+            LoginResponse::class
+        );
+        $this->app->singleton(
+            RegisterResponseContract::class,
+            RegisterResponse::class
+        );
+
+
     }
 
     /**
