@@ -10,3 +10,9 @@ export type SharedData = {
     sidebarOpen: boolean;
     [key: string]: unknown;
 };
+export type service ={
+    name:string;
+    description:string;
+    price:number;
+    is_active:string;
+};

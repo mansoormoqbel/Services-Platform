@@ -13,6 +13,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes/admin';
+import { index  } from '@/routes/admin/service';
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
 
@@ -20,6 +21,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Admin Dashboard',
         href: dashboard(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Service',
+        href: index().url,
         icon: LayoutGrid,
     },
 ];
@@ -57,7 +63,7 @@ export function AdminSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
