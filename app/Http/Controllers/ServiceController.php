@@ -66,8 +66,10 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        $service=Service::where('id',$service->id)->get();
-        return $service;
+        //$service=Service::where('id',$service->id)->first();
+         return inertia('admin/service/edit', [
+        'service' => $service,
+        ]);
     }
 
     /**
@@ -75,7 +77,19 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'is_active' => 'required|string',
+        ]);
+
+        $service->update($validated);
+
+        return redirect()->route('admin.service.index')
+            ->with('success', 'Service updated successfully.');
+
+            
     }
 
     /**
