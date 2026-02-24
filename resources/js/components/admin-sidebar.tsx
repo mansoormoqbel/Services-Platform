@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes/admin';
 import { index  } from '@/routes/admin/service';
+import { user  } from '@/routes/admin/user';
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
 
@@ -26,6 +27,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Service',
         href: index().url,
+        icon: LayoutGrid,
+    },
+    {
+        title: 'User',
+        href: user().url,
         icon: LayoutGrid,
     },
 ];

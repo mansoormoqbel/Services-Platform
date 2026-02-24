@@ -74,7 +74,7 @@ export default function Register() {
                                         <SelectItem value="provider">Provider</SelectItem>
                                     </SelectContent>
                                 </Select>
-
+                                    
                                 <InputError message={errors.role} />
                             </div>
                             
