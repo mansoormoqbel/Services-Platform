@@ -9,6 +9,7 @@ use App\Concerns\ProfileValidationRules;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -65,7 +66,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user=User::where('id',$id)->first();
+         return inertia('admin/user/edit', [
+        'user1' => $user,
+        ]);
     }
 
     /**
@@ -73,7 +77,21 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user=User::where('id',$id)->first();
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required','string','email','max:255',$id === null
+                ? Rule::unique(User::class)
+                : Rule::unique(User::class)->ignore($id),],
+            'password' => ['required', 'string',],
+            'role' => ['required', 'in:customer,provider,admin']
+        ]);
+
+        $user->update($validated);
+
+        return redirect()->route('admin.user.user')
+            ->with('success', 'Service updated successfully.');
+
     }
 
     /**
@@ -81,6 +99,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user=User::where('id',$id)->first();
+         $user->delete();
+        return redirect()->route('admin.user.user');
     }
 }

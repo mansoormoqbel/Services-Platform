@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\adminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Provider\providerController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\BookingController;
 
 
 Route::get('/', function () {
@@ -35,7 +36,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('user');
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::get('/store', [UserController::class, 'store'])->name('store');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
         
+    });
+     Route::prefix('booking')->name('booking.')->group(function () {
+        Route::get('/', [BookingController::class, 'index'])->name('booking');
+        /* Route::get('/create', [BookingController::class, 'create'])->name('create');
+        Route::get('/store', [BookingController::class, 'store'])->name('store');
+        Route::get('/{user}/edit', [BookingController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [BookingController::class, 'update'])->name('update');
+        Route::delete('/{user}', [BookingController::class, 'destroy'])->name('destroy');
+         */
     });
     /* Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');

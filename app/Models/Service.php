@@ -14,8 +14,10 @@ class Service extends Model
         'is_active',
     ];
 
-    /* 'name'); 
-            $table->text('description'); 
-            $table->decimal('price',8,2); 
-            $table->enum('is_active', ['active','not_active']); */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class,'service_id');
+    }
+   
+   
 }

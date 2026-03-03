@@ -15,6 +15,7 @@ import {
 import { dashboard } from '@/routes/admin';
 import { index  } from '@/routes/admin/service';
 import { user  } from '@/routes/admin/user';
+import { booking  } from '@/routes/admin/booking';
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
 
@@ -32,6 +33,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'User',
         href: user().url,
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Booking',
+        href: booking().url,
         icon: LayoutGrid,
     },
 ];
