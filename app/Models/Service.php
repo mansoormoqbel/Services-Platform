@@ -14,9 +14,12 @@ class Service extends Model
         'is_active',
     ];
 
-    public function bookings()
+    public function service()
     {
         return $this->hasMany(Booking::class,'service_id');
+    }
+    public function providers() {
+        return $this->belongsToMany(User::class, 'provider_service', 'service_id', 'provider_id');
     }
    
    

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Booking;
+use App\Models\Service;
+use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class BookingController extends Controller
@@ -14,8 +18,9 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings=Booking::all();
-        return Inertia::render('admin/booking/index',['booking' => $bookings] );
+        $bookings=Booking::With('user','provider','service')->get();
+       /*  return $bookings; */
+        return Inertia::render('admin/booking/index',['bookings' => $bookings] );
      
     }
 
@@ -24,7 +29,11 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        $users=User::where('role','customer')->select('id','name')->get();
+        $providers=User::Where('role','provider')->select('id','name')->get();
+        $services=Service::select('id','name')->get();
+        return Inertia::render('admin/booking/create',['users' => $users,'providers' => $providers,'services' => $services] );
+       
     }
 
     /**
@@ -32,7 +41,22 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //return $request;
+         $data = $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'provider_id' => 'required|exists:users,id',
+                'service_id' => 'required|exists:services,id',
+                'scheduled_at' => 'required|date|after:now',
+            ]);
+            
+                Booking::create([
+                'user_id' => $data['user_id'],
+                'provider_id' => $data['provider_id'],
+                'service_id'=>$data['service_id'],
+                'scheduled_at' => $data['scheduled_at'],
+                'status'=>'pending',
+            ]);
+        return redirect()->route('admin.booking.booking');
     }
 
     /**

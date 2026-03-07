@@ -43,7 +43,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
      Route::prefix('booking')->name('booking.')->group(function () {
         Route::get('/', [BookingController::class, 'index'])->name('booking');
-        /* Route::get('/create', [BookingController::class, 'create'])->name('create');
+        Route::get('/create', [BookingController::class, 'create'])->name('create');
+        Route::get('/store', [BookingController::class, 'store'])->name('store');
+        /* 
         Route::get('/store', [BookingController::class, 'store'])->name('store');
         Route::get('/{user}/edit', [BookingController::class, 'edit'])->name('edit');
         Route::put('/{user}', [BookingController::class, 'update'])->name('update');
@@ -57,11 +59,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
      /** start Users */
     //Route::get('/index',[UserController::class, 'index'])->name('admin.user');
     
-});
+})->middleware(['auth', 'verified']);
 
 Route::prefix('provider')->group(function () {
     Route::get('/dashboard',[providerController::class, 'index'])->name('provider.dashboard');
-});
+})->middleware(['auth', 'verified']);
 require __DIR__.'/settings.php';
  /* 
     Route::get('/index',[ServiceController::class, 'index'])->name('admin.service.index');

@@ -1,5 +1,5 @@
 import { useState  } from 'react';
-import { Head,Form,Link } from '@inertiajs/react';
+import { Head,Form,Link,usePage } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from  '
 import { Spinner } from '@/components/ui/spinner';
 import AdminLayout from '@/layouts/admin-layout';
 import { dashboard } from '@/routes/admin';
-import { store, user} from '@/routes/admin/user';
+import { store, booking} from '@/routes/admin/booking';
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -18,22 +18,22 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dashboard().url,
     },
     {
-        title: 'User',
-        href:   user().url,
+        title: 'Booking',
+        href:   booking().url,
     },
 ];
-type Users={
-    id:number;
-    name:string;
-    description:string;
-    price:number;
-    is_active:string;
-};
+type PageProps = {
+    users: { id: number; name: string }[]
+    providers: { id: number; name: string }[]
+    services: { id: number; name: string }[]
+}
 
-export default function  CreateUser() {
+export default function  CreateBooking() {
 
-     const [role,setRole]=useState('');
-
+    const { users, providers, services } = usePage<PageProps>().props;
+    const [user,setUser]=useState('');
+    const [provider,setProvider]=useState('');
+    const [service,setService]=useState('');
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title="Add User" />
@@ -49,90 +49,83 @@ export default function  CreateUser() {
                                <>
 
                                    <div className="grid gap-3">
-                                       <div className="grid gap-2">
-                                           <Label htmlFor="name">Name</Label>
-                                           <Input
-                                               id="name"
-                                               type="text"
-                                               required
-                                               autoFocus
-                                               tabIndex={1}
-                                               autoComplete="name"
-                                               name="name"
-                                               placeholder="Full name"
-                                           />
-                                           <InputError
-                                               message={errors.name}
-                                               className="mt-2"
-                                           />
-                                       </div>
-                                       
-           
-                                       <div className="grid gap-2">
-                                           <Label htmlFor="email">Email address</Label>
-                                           <Input
-                                               id="email"
-                                               type="email"
-                                               required
-                                               tabIndex={2}
-                                               autoComplete="email"
-                                               name="email"
-                                               placeholder="email@example.com"
-                                           />
-                                           <InputError message={errors.email} />
-                                       </div>
+                                      
                                         <div className="grid gap-2">
-                                           <Label htmlFor="role">Role</Label>
+                                           <Label htmlFor="user">User</Label>
            
-                                           <Select name="role" value={role} onValueChange={setRole}>
-                                               <SelectTrigger id="role" tabIndex={3} className="w-full">
-                                                   <SelectValue placeholder="Select a role" />
+                                           <Select name="user_id" value={user} onValueChange={setUser}>
+                                               <SelectTrigger id="user" tabIndex={3} className="w-full">
+                                                   <SelectValue placeholder="Select a user" />
                                                </SelectTrigger>
            
                                                <SelectContent position="popper" className="z-50">
-                                                   <SelectItem value="customer">User</SelectItem>
-                                                   <SelectItem value="provider">Provider</SelectItem>
-                                                   <SelectItem value="admin">ِAdmin</SelectItem>
+                                                    {users.map((user) => (
+                                                        <SelectItem key={user.id} value={String(user.id)}>
+                                                            {user.name}
+                                                        </SelectItem>
+                                                    ))}
                                                </SelectContent>
                                            </Select>
-                                           <Input id="role" type="hidden" name="role" value={role} />
+                                           <Input id="user" type="hidden" name="user_id" value={user} />
            
-                                           <InputError message={errors.role} />
+                                           <InputError message={errors.user_id} />
                                        </div>
-                                       
-           
                                        <div className="grid gap-2">
-                                           <Label htmlFor="password">Password</Label>
-                                           <Input
-                                               id="password"
-                                               type="password"
-                                               required
-                                               tabIndex={4}
-                                               autoComplete="new-password"
-                                               name="password"
-                                               placeholder="Password"
-                                           />
-                                           <InputError message={errors.password} />
-                                       </div>
+                                           <Label htmlFor="provider">Provider</Label>
            
+                                           <Select name="provider_id" value={provider} onValueChange={setProvider}>
+                                               <SelectTrigger id="provider" tabIndex={3} className="w-full">
+                                                   <SelectValue placeholder="Select a provider" />
+                                               </SelectTrigger>
+           
+                                               <SelectContent position="popper" className="z-50">
+                                                    {providers.map((provider) => (
+                                                        <SelectItem key={provider.id} value={String(provider.id)}>
+                                                            {provider.name}
+                                                        </SelectItem>
+                                                    ))}
+                                               </SelectContent>
+                                           </Select>
+                                           <Input id="provider" type="hidden" name="provider_id" value={provider} />
+           
+                                           <InputError message={errors.provider_id} />
+                                       </div>
                                        <div className="grid gap-2">
-                                           <Label htmlFor="password_confirmation">
-                                               Confirm password
-                                           </Label>
-                                           <Input
-                                               id="password_confirmation"
-                                               type="password"
-                                               required
-                                               tabIndex={5}
-                                               autoComplete="new-password"
-                                               name="password_confirmation"
-                                               placeholder="Confirm password"
-                                           />
-                                           <InputError
-                                               message={errors.password_confirmation}
-                                           />
-                                       </div>
+                                           <Label htmlFor="service">Service</Label>
            
+                                           <Select name="service_id" value={service} onValueChange={setService}>
+                                               <SelectTrigger id="service" tabIndex={3} className="w-full">
+                                                   <SelectValue placeholder="Select a service" />
+                                               </SelectTrigger>
+           
+                                               <SelectContent position="popper" className="z-50">
+                                                    {services.map((service) => (
+                                                        <SelectItem key={service.id} value={String(service.id)}>
+                                                            {service.name}
+                                                        </SelectItem>
+                                                    ))}
+                                               </SelectContent>
+                                           </Select>
+                                           <Input id="service" type="hidden" name="service_id" value={service} />
+           
+                                           <InputError message={errors.service_id} />
+                                       </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="scheduled_at">Data Booking</Label>
+                                            <Input
+                                                id="scheduled_at"
+                                                type="date"
+                                                required
+                                                tabIndex={2}
+                                                autoComplete="date"
+                                                name="scheduled_at"
+                                               min={new Date().toISOString().split("T")[0]}
+                                                placeholder=""
+                                            />
+                                            <InputError message={errors.scheduled_at} />
+                                        </div>
+           
+                                              
                                        <Button
                                            type="submit"
                                            className="mt-2 w-full"
@@ -140,13 +133,14 @@ export default function  CreateUser() {
                                            data-test="register-user-button"
                                        >
                                            {processing && <Spinner />}
-                                           Create User
+                                           Create Booking
                                        </Button>
                                    </div>
                                    
                                    
+                                   
                                     {<Link
-                                        href={user().url}
+                                        href={booking().url}
                                         className="px-4 py-2 border rounded"
                                     >
                                         Cancel

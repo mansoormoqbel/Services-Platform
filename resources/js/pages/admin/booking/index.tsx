@@ -2,7 +2,7 @@ import { Head,useForm,usePage,Link } from '@inertiajs/react';
 import { useState } from 'react';
 import AdminLayout from '@/layouts/admin-layout';
 import { dashboard } from '@/routes/admin';
-import {booking} from '@/routes/admin/booking'
+import {create, booking} from '@/routes/admin/booking'
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -22,6 +22,20 @@ type bookings={
     service_id:string;
     scheduled_at:string;
     status:string;
+    user: {
+        id: number;
+        name: string;
+    };
+
+    provider: {
+        id: number;
+        name: string;
+    };
+
+    service: {
+        id: number;
+        name: string;
+    };
 };
 
 export default function  Users() {
@@ -49,10 +63,10 @@ export default function  Users() {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Booking</h1>
                     {<Link
-                        /* href={create().url} */
+                        href={create().url}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                     >
-                        + Add User
+                        + Add Booking
                     </Link>} 
                 </div>
 
@@ -79,13 +93,14 @@ export default function  Users() {
                                 </td>
                             </tr>
                         )}
-
                         {bookings.map(booking => (
                             <tr key={booking.id} className="border-t">
                                 <td className="p-3">{booking.id}</td>
-                                <td className="p-3">{booking.name}</td>
-                                <td className="p-3">{booking.email}</td>
-                                <td className="p-3">{booking.role}</td>
+                                <td className="p-3">{booking.user.name}</td>
+                                <td className="p-3">{booking.provider.name}</td>
+                                <td className="p-3">{booking.service.name}</td>
+                                <td className="p-3">{booking.scheduled_at}</td>
+                                <td className="p-3">{booking.status}</td>
                                 
                                 <td className="p-3 flex gap-3">
                                     <Link
@@ -96,7 +111,7 @@ export default function  Users() {
                                     </Link>
                                     {<button
                                         disabled={processing}
-                                        onClick={() => handleDelete(user.id)}
+                                        onClick={() => handleDelete(booking.id)}
                                         className="text-red-600 hover:underline disabled:opacity-50"
                                     >
                                         Delete
