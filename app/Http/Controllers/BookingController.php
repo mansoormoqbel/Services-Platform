@@ -72,7 +72,11 @@ class BookingController extends Controller
      */
     public function edit(Booking $booking)
     {
-        //
+         $booking->load(['user', 'provider', 'service']);
+
+        return Inertia::render('admin/booking/edit', [
+            'booking' => $booking
+        ]);
     }
 
     /**
@@ -80,7 +84,14 @@ class BookingController extends Controller
      */
     public function update(Request $request, Booking $booking)
     {
-        //
+         $booking->update([
+        'scheduled_at' => $request->scheduled_at,
+        'status' => $request->status,
+    ]);
+
+    return redirect()->route('admin.booking.booking')
+        ->with('success', 'Booking updated successfully');
+       
     }
 
     /**
@@ -88,6 +99,7 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        //
+        $booking->delete();
+        return redirect()->route('admin.booking.booking');
     }
 }

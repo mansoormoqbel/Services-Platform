@@ -45,12 +45,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [BookingController::class, 'index'])->name('booking');
         Route::get('/create', [BookingController::class, 'create'])->name('create');
         Route::get('/store', [BookingController::class, 'store'])->name('store');
-        /* 
-        Route::get('/store', [BookingController::class, 'store'])->name('store');
-        Route::get('/{user}/edit', [BookingController::class, 'edit'])->name('edit');
-        Route::put('/{user}', [BookingController::class, 'update'])->name('update');
-        Route::delete('/{user}', [BookingController::class, 'destroy'])->name('destroy');
-         */
+        Route::get('/{booking}/edit', [BookingController::class, 'edit'])->name('edit');
+        Route::put('/{booking}', [BookingController::class, 'update'])->name('update');
+        Route::delete('/{booking}', [BookingController::class, 'destroy'])->name('destroy');
+       
     });
     /* Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');

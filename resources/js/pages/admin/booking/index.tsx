@@ -2,7 +2,7 @@ import { Head,useForm,usePage,Link } from '@inertiajs/react';
 import { useState } from 'react';
 import AdminLayout from '@/layouts/admin-layout';
 import { dashboard } from '@/routes/admin';
-import {create, booking} from '@/routes/admin/booking'
+import {destroy, create, booking} from '@/routes/admin/booking'
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -45,14 +45,14 @@ export default function  Users() {
     function handleDelete(id: number) {
         if (!confirm('Are you sure you want to delete this user?')) return;
 
-        /* submitDelete(destroy(id).url, {
+        submitDelete(destroy(id).url, {
             preserveScroll: true,
             onSuccess: () => {
-                setUsers(prev =>
-                    prev.filter(user => user.id !== id)
+                setBookings(prev =>
+                    prev.filter(booking => booking.id !== id)
                 );
             },
-        }); */
+        });
     }
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>

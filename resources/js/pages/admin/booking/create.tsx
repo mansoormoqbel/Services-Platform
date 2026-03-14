@@ -114,7 +114,7 @@ export default function  CreateBooking() {
                                             <Label htmlFor="scheduled_at">Data Booking</Label>
                                             <Input
                                                 id="scheduled_at"
-                                                type="date"
+                                                type="datetime-local"
                                                 required
                                                 tabIndex={2}
                                                 autoComplete="date"

@@ -1,8 +1,15 @@
-import { Head, useForm, Link, usePage } from '@inertiajs/react';
+import { useState} from 'react';
+import { Head,useForm,Form,Link,usePage } from '@inertiajs/react';
+import InputError from '@/components/input-error';
+import TextLink from '@/components/text-link';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from  '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
 import AdminLayout from '@/layouts/admin-layout';
 import { dashboard } from '@/routes/admin';
-import { user,update } from '@/routes/admin/user';
-//import { index, update } from '@/routes/admin/service';
+import { update, booking} from '@/routes/admin/booking';
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -11,121 +18,151 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dashboard().url,
     },
     {
-        title: 'user',
-        href: user().url,
+        title: 'Booking',
+        href:   booking().url,
     },
 ];
-
 type PageProps = {
-    user1:{
-    id:number;
-    name:string;
-    email:string;
-    password:string;
-    role:string;
-    };
+    users: { id: number; name: string }[]
+    providers: { id: number; name: string }[]
+    services: { id: number; name: string }[]
+}
+type Booking = {
+    id: number;
+    scheduled_at: string;
+    status: string;
 };
 
-export default function EditService() {
-    const { user1 } = usePage<PageProps>().props;
+export default function  EditBooking() {
 
-    // Prevent crash if service is missing
-    if (!user1) {
-        return <div className="p-6">Loading...</div>;
-    }
+    const { booking } = usePage<{ booking: Booking }>().props;
 
-    const form = useForm({
-        name: user1.name ?? '',
-        email: user1.email ?? '',
-        password: user1.password ?? '',
-        role: user1.role ?? '',
+    const { data, setData, put, processing, errors } = useForm({
+        scheduled_at: booking.scheduled_at,
+        status: booking.status,
     });
-
-    function submit(e: React.FormEvent) {
+    function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        form.put(update(user1.id).url);
-    }
 
+        put(update(booking.id).url);
+    }
+    
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
-            <Head title="Edit user" />
+            <Head title="Add User" />
 
-            <div className="p-6 max-w-xl">
-                <h1 className="text-2xl font-bold mb-4">Edit User</h1>
+            <Form
+                           {...store.form()}
+                           resetOnSuccess={['password', 'password_confirmation']}
+                           disableWhileProcessing
+                           className="flex flex-col gap-6"
+                       >
+                           {({ processing, errors }) => (
+                                
+                               <>
 
-                {/* Validation Errors */}
-                {form.hasErrors && (
-                    <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
-                        <ul>
-                            {Object.values(form.errors).map((error, i) => (
-                                <li key={i}>{error}</li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-
-                <form onSubmit={submit} className="space-y-4">
-                    <input
-                        className="w-full border p-2 rounded"
-                        placeholder="Name"
-                        value={form.data.name}
-                        onChange={(e) =>
-                            form.setData('name', e.target.value)
-                        }
-                    />
-
-                    <input
-                        className="w-full border p-2 rounded"
-                        placeholder="email"
-                        value={form.data.email}
-                        onChange={(e) =>
-                            form.setData('email', e.target.value)
-                        }
-                        
-                    />
-
-                    <input
-                        type="Password"
-                        className="w-full border p-2 rounded"
-                        placeholder="Password"
-                        value={form.data.password}
-                        onChange={(e) =>
-                            form.setData('password', e.target.value)
-                        }
-                    />
-
-                    <select
-                        className="w-full border p-2 rounded"
-                        value={form.data.role}
-                        onChange={(e) =>
-                            form.setData('role', e.target.value)
-                        }
-                    >
-                         <option  className="bg-black-100 text-gray-900">Select Status</option>
-                          
-                        <option value="customer" className="bg-black-100 text-gray-900">User</option>
-                        <option value="provider" className="bg-black-100 text-gray-900">provider</option>
-                        <option value="admin" className="bg-black-100 text-gray-900">admin</option>
-                    </select>
-
-                    <div className="flex gap-2">
-                        <button
-                            type="submit"
-                            disabled={form.processing}
-                            className="bg-blue-600 text-white px-4 py-2 rounded"
-                        >
-                            {form.processing ? 'Saving...' : 'Save'}
-                        </button>
-
-                        <Link
-                            href={user().url}
-                            className="px-4 py-2 border rounded"
-                        >
-                            Cancel
-                        </Link>
-                    </div>
-                </form>
-            </div>
+                                   <div className="grid gap-3">
+                                      
+                                        <div className="grid gap-2">
+                                           <Label htmlFor="user">User</Label>
+           
+                                           <Select name="user_id" value={user} onValueChange={setUser}>
+                                               <SelectTrigger id="user" tabIndex={3} className="w-full">
+                                                   <SelectValue placeholder="Select a user" />
+                                               </SelectTrigger>
+           
+                                               <SelectContent position="popper" className="z-50">
+                                                    {users.map((user) => (
+                                                        <SelectItem key={user.id} value={String(user.id)}>
+                                                            {user.name}
+                                                        </SelectItem>
+                                                    ))}
+                                               </SelectContent>
+                                           </Select>
+                                           <Input id="user" type="hidden" name="user_id" value={user} />
+           
+                                           <InputError message={errors.user_id} />
+                                       </div>
+                                       <div className="grid gap-2">
+                                           <Label htmlFor="provider">Provider</Label>
+           
+                                           <Select name="provider_id" value={provider} onValueChange={setProvider}>
+                                               <SelectTrigger id="provider" tabIndex={3} className="w-full">
+                                                   <SelectValue placeholder="Select a provider" />
+                                               </SelectTrigger>
+           
+                                               <SelectContent position="popper" className="z-50">
+                                                    {providers.map((provider) => (
+                                                        <SelectItem key={provider.id} value={String(provider.id)}>
+                                                            {provider.name}
+                                                        </SelectItem>
+                                                    ))}
+                                               </SelectContent>
+                                           </Select>
+                                           <Input id="provider" type="hidden" name="provider_id" value={provider} />
+           
+                                           <InputError message={errors.provider_id} />
+                                       </div>
+                                       <div className="grid gap-2">
+                                           <Label htmlFor="service">Service</Label>
+           
+                                           <Select name="service_id" value={service} onValueChange={setService}>
+                                               <SelectTrigger id="service" tabIndex={3} className="w-full">
+                                                   <SelectValue placeholder="Select a service" />
+                                               </SelectTrigger>
+           
+                                               <SelectContent position="popper" className="z-50">
+                                                    {services.map((service) => (
+                                                        <SelectItem key={service.id} value={String(service.id)}>
+                                                            {service.name}
+                                                        </SelectItem>
+                                                    ))}
+                                               </SelectContent>
+                                           </Select>
+                                           <Input id="service" type="hidden" name="service_id" value={service} />
+           
+                                           <InputError message={errors.service_id} />
+                                       </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="scheduled_at">Data Booking</Label>
+                                            <Input
+                                                id="scheduled_at"
+                                                type="datetime-local"
+                                                required
+                                                tabIndex={2}
+                                                autoComplete="date"
+                                                name="scheduled_at"
+                                               min={new Date().toISOString().split("T")[0]}
+                                                placeholder=""
+                                            />
+                                            <InputError message={errors.scheduled_at} />
+                                        </div>
+           
+                                              
+                                       <Button
+                                           type="submit"
+                                           className="mt-2 w-full"
+                                           tabIndex={5}
+                                           data-test="register-user-button"
+                                       >
+                                           {processing && <Spinner />}
+                                           Create Booking
+                                       </Button>
+                                   </div>
+                                   
+                                   
+                                   
+                                    {<Link
+                                        href={booking().url}
+                                        className="px-4 py-2 border rounded"
+                                    >
+                                        Cancel
+                                    </Link>}
+           
+                                  
+                               </>
+                           )}
+                       </Form>
         </AdminLayout>
     );
 }
