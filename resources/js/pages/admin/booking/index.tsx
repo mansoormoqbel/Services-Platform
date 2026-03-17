@@ -2,7 +2,7 @@ import { Head,useForm,usePage,Link } from '@inertiajs/react';
 import { useState } from 'react';
 import AdminLayout from '@/layouts/admin-layout';
 import { dashboard } from '@/routes/admin';
-import {destroy, create, booking} from '@/routes/admin/booking'
+import {destroy,edit, create, booking} from '@/routes/admin/booking'
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -104,7 +104,7 @@ export default function  Users() {
                                 
                                 <td className="p-3 flex gap-3">
                                     <Link
-                                        /* href={edit(user.id).url} */
+                                        href={edit(booking.id).url}
                                         className="text-blue-600 hover:underline"
                                     >
                                         Edit

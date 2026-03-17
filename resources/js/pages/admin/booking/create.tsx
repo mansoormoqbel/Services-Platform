@@ -40,7 +40,7 @@ export default function  CreateBooking() {
 
             <Form
                            {...store.form()}
-                           resetOnSuccess={['password', 'password_confirmation']}
+                           resetOnSuccess={['notes', 'password_confirmation']}
                            disableWhileProcessing
                            className="flex flex-col gap-6"
                        >
@@ -122,7 +122,23 @@ export default function  CreateBooking() {
                                                min={new Date().toISOString().split("T")[0]}
                                                 placeholder=""
                                             />
+
                                             <InputError message={errors.scheduled_at} />
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="notes">notes Booking</Label>
+                                            <Input
+                                                id="notes"
+                                                type="text"
+                                                required
+                                                tabIndex={2}
+                                                autoComplete="notes"
+                                                name="notes"
+                                                placeholder=""
+                                            />
+                                            <textarea></textarea>
+                                            
+                                            <InputError message={errors.notes} />
                                         </div>
            
                                               

@@ -27,13 +27,13 @@ type PageProps = {
     providers: { id: number; name: string }[]
     services: { id: number; name: string }[]
 }
-type Booking = {
+/* type Booking = {
     id: number;
     scheduled_at: string;
     status: string;
-};
+}; */
 
-export default function  EditBooking() {
+/* export default function  EditBooking() {
 
     const { booking } = usePage<{ booking: Booking }>().props;
 
@@ -163,6 +163,73 @@ export default function  EditBooking() {
                                </>
                            )}
                        </Form>
+        </AdminLayout>
+    );
+} */
+
+
+type Booking = {
+    id: number;
+    scheduled_at: string;
+    status: string;
+};
+
+export default function EditBooking() {
+
+    const { booking } = usePage<{ booking: Booking }>().props;
+
+    const { data, setData, put, processing, errors } = useForm({
+        scheduled_at: booking.scheduled_at,
+        status: booking.status,
+    });
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
+        put(update(booking.id).url);
+    }
+
+    return (
+        <AdminLayout>
+            <Head title="Edit Booking" />
+
+            <div className="p-6 max-w-xl">
+                <h1 className="text-2xl font-bold mb-4">Edit Booking</h1>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+
+                    <div>
+                        <label>Scheduled At</label>
+                        <input
+                            type="datetime-local"
+                            value={data.scheduled_at}
+                            onChange={e => setData('scheduled_at', e.target.value)}
+                            className="border p-2 w-full"
+                        />
+                    </div>
+
+                    <div>
+                        <label>Status</label>
+                        <select
+                            value={data.status}
+                            onChange={e => setData('status', e.target.value)}
+                            className="border p-2 w-full bg-black-100"
+                        >
+                            <option value="pending" className="bg-black-100 text-gray-900">Pending</option>
+                            <option value="confirmed" className="bg-black-100 text-gray-900">Confirmed</option>
+                            <option value="completed" className="bg-black-100 text-gray-900">Completed</option>
+                        </select>
+                    </div>
+
+                    <button
+                        disabled={processing}
+                        className="bg-blue-600 text-white px-4 py-2 rounded"
+                    >
+                        Update Booking
+                    </button>
+
+                </form>
+            </div>
         </AdminLayout>
     );
 }

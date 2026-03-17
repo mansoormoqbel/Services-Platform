@@ -42,12 +42,13 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         //return $request;
-         $data = $request->validate([
+            $data = $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'provider_id' => 'required|exists:users,id',
                 'service_id' => 'required|exists:services,id',
                 'scheduled_at' => 'required|date|after:now',
             ]);
+            $ser=Service::where('id',$data['service_id'])->get();
             
                 Booking::create([
                 'user_id' => $data['user_id'],
@@ -55,6 +56,8 @@ class BookingController extends Controller
                 'service_id'=>$data['service_id'],
                 'scheduled_at' => $data['scheduled_at'],
                 'status'=>'pending',
+                'price'=>$ser->price,
+                
             ]);
         return redirect()->route('admin.booking.booking');
     }
