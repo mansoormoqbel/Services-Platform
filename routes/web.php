@@ -48,7 +48,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/{booking}/edit', [BookingController::class, 'edit'])->name('edit');
         Route::put('/{booking}', [BookingController::class, 'update'])->name('update');
         Route::delete('/{booking}', [BookingController::class, 'destroy'])->name('destroy');
-       
+        Route::post('/{booking}/accept', [BookingController::class, 'accept'])->name('accept');
+        Route::post('/{booking}/cancel', [BookingController::class, 'cancel'])->name('cancel');
+        Route::post('/{booking}/complete', [BookingController::class, 'complete'])->name('complete');
+   
     });
     /* Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');

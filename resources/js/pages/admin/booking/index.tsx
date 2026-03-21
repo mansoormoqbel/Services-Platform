@@ -2,7 +2,7 @@ import { Head,useForm,usePage,Link } from '@inertiajs/react';
 import { useState } from 'react';
 import AdminLayout from '@/layouts/admin-layout';
 import { dashboard } from '@/routes/admin';
-import {destroy,edit, create, booking} from '@/routes/admin/booking'
+import {destroy,edit,accept,cancel,complete , create, booking} from '@/routes/admin/booking'
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -108,6 +108,25 @@ export default function  Users() {
                                         className="text-blue-600 hover:underline"
                                     >
                                         Edit
+                                    </Link>
+                                    {/* accept,cancel,complete  */}
+                                    <Link
+                                        href={accept(booking.id).url}
+                                        className="text-white-600 hover:underline"
+                                    >
+                                        Accept
+                                    </Link>
+                                    <Link
+                                        href={cancel(booking.id).url}
+                                        className="text-gray-600 hover:underline"
+                                    >
+                                        Cancel
+                                    </Link>
+                                    <Link
+                                        href={complete(booking.id).url}
+                                        className="text-green-600 hover:underline"
+                                    >
+                                        Complete
                                     </Link>
                                     {<button
                                         disabled={processing}

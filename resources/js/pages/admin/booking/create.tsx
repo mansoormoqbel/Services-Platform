@@ -136,7 +136,7 @@ export default function  CreateBooking() {
                                                 name="notes"
                                                 placeholder=""
                                             />
-                                            <textarea></textarea>
+                                            
                                             
                                             <InputError message={errors.notes} />
                                         </div>

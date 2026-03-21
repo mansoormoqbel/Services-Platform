@@ -47,8 +47,9 @@ class BookingController extends Controller
                 'provider_id' => 'required|exists:users,id',
                 'service_id' => 'required|exists:services,id',
                 'scheduled_at' => 'required|date|after:now',
+                'notes'=>'required',
             ]);
-            $ser=Service::where('id',$data['service_id'])->get();
+            $ser=Service::where('id',$data['service_id'])->first();
             
                 Booking::create([
                 'user_id' => $data['user_id'],
@@ -56,8 +57,9 @@ class BookingController extends Controller
                 'service_id'=>$data['service_id'],
                 'scheduled_at' => $data['scheduled_at'],
                 'status'=>'pending',
+                'notes'=>$data['notes'],
                 'price'=>$ser->price,
-                
+
             ]);
         return redirect()->route('admin.booking.booking');
     }
@@ -65,9 +67,38 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Booking $booking)
+    public function accept($id)
     {
-        //
+        $booking = Booking::findOrFail($id);
+
+        $booking->update([
+            'status' => 'accepted',
+            'accepted_at' => now()
+        ]);
+
+        return back();
+    }
+    public function cancel(Request $request, $id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        $booking->update([
+            'status' => 'cancelled',
+            'cancel_reason' => $request->reason,
+            'cancelled_at' => now()
+        ]);
+
+        return back();
+    }
+     public function complete($id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        $booking->update([
+            'status' => 'completed'
+        ]);
+
+        return back();
     }
 
     /**
@@ -87,10 +118,13 @@ class BookingController extends Controller
      */
     public function update(Request $request, Booking $booking)
     {
-         $booking->update([
-        'scheduled_at' => $request->scheduled_at,
-        'status' => $request->status,
-    ]);
+        $data = $request->validate([
+            'scheduled_at' => 'required|date',
+            'status' => 'required|in:pending,accepted,completed,cancelled'
+        ]);
+
+        $booking->update($data);
+        
 
     return redirect()->route('admin.booking.booking')
         ->with('success', 'Booking updated successfully');
