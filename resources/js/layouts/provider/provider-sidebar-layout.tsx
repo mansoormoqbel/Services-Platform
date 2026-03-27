@@ -1,7 +1,7 @@
 import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
-import { AdminSidebar } from '@/components/admin-sidebar';
-import { AdminSidebarHeader } from '@/components/admin-sidebar-header';
+import { ProviderSidebar } from '@/components/provider-sidebar';
+import { ProviderSidebarHeader } from '@/components/provider-sidebar-header';
 import type { AppLayoutProps } from '@/types';
 
 export default function ProviderSidebarLayout({
@@ -10,9 +10,9 @@ export default function ProviderSidebarLayout({
 }: AppLayoutProps) {
     return (
         <AppShell variant="sidebar">
-            <AdminSidebar />
+            <ProviderSidebar />
             <AppContent variant="sidebar" className="overflow-x-hidden">
-                <AdminSidebarHeader breadcrumbs={breadcrumbs} />
+                <ProviderSidebarHeader breadcrumbs={breadcrumbs} />
                 {children}
             </AppContent>
         </AppShell>

@@ -1,5 +1,6 @@
+
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, DeleteIcon, Folder, LayoutGrid, Pencil    } from 'lucide-react';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -12,7 +13,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes/provider';
+import { create , dashboard,service } from '@/routes/provider';
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
 
@@ -21,6 +22,16 @@ const mainNavItems: NavItem[] = [
         title: 'Provider Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Create Service ',
+        href: create(),
+        icon: Pencil   ,
+    },
+    {
+        title: ' Service ',
+        href: service(),
+        icon: Pencil   ,
     },
 ];
 

@@ -6,6 +6,8 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\Admin\adminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Provider\providerController;
+use App\Http\Controllers\Provider\ServicePController;
+
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BookingController;
 
@@ -62,15 +64,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     
 })->middleware(['auth', 'verified']);
 
-Route::prefix('provider')->group(function () {
-    Route::get('/dashboard',[providerController::class, 'index'])->name('provider.dashboard');
+Route::prefix('provider')->name('provider.')->group(function () {
+    Route::get('/dashboard',[providerController::class, 'index'])->name('dashboard');
+    Route::get('/create', [ServicePController::class, 'create'])->name('create');
+    Route::post('/', [ServicePController::class, 'store'])->name('store');
+    Route::get('/service', [ServicePController::class, 'service'])->name('service');
+    
+     
+
 })->middleware(['auth', 'verified']);
 require __DIR__.'/settings.php';
- /* 
-    Route::get('/index',[ServiceController::class, 'index'])->name('admin.service.index');
-    Route::get('/create',[ServiceController::class,'create'])->name('admin.service.create');
-    Route::post('/store',[ServiceController::class,'store'])->name('admin.service.stores');
-    Route::get('/{service}/edit', [ServiceController::class, 'edit'])->name('admin.service.edit');
-    Route::put('/service/{service}', [ServiceController::class, 'update'])->name('admin.service.update');
-    Route::delete('/service/{service}', [ServiceController::class, 'destroy'])->name('admin.service.destroy');
-      *//** end services */
+ 

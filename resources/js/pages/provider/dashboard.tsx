@@ -11,10 +11,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function  AdminDashboard() {
+export default function  ProviderDashboard() {
     return (
         <ProviderLayout breadcrumbs={breadcrumbs}>
-            <Head title="Admin Dashboard" />
+            <Head title="Provider Dashboard" />
 
             Provider test
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
