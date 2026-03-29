@@ -15,7 +15,8 @@ class ServiceUController extends Controller
             ->select('id', 'name', 'price')
             ->get();
 
-        return Inertia::render('User/Services', [
+        //return $services;    
+        return Inertia::render('user/services', [
             'services' => $services
         ]);
     }

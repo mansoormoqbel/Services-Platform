@@ -10,17 +10,37 @@ use App\Http\Controllers\Provider\ServicePController;
 
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BookingController;
-
+//user
+use App\Http\Controllers\User\ServiceUController;
+use App\Http\Controllers\User\ProviderUController;
+use App\Http\Controllers\User\BookingUController;
+use App\Http\Controllers\User\DashboardUController;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
+Route::middleware(['auth','verified'])->group(function (){
+    Route::get('dashboard', [DashboardUController::class, 'Dashboard'])->name('dashboard');
+    //Route::get('dashboard', function () {return Inertia::render('dashboard');})->name('dashboard');
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/services', [ServiceUController::class, 'index'])->name('services');
+        Route::get('/services/{service}/providers', [ProviderUController::class, 'index'])->name('providers');
+        Route::post('/createBooking', [BookingUController::class, 'create'])->name('createBooking');
 
-Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+        Route::post('/booking', [BookingUController::class, 'store'])->name('store');
+        Route::get('/my-bookings', [BookingUController::class, 'myBookings'])->name('bookings');
+        Route::post('/{booking}/cancel', [BookingUController::class, 'cancel'])->name('cancel');
+        
+
+    });
+
+    //Route::get('/services', [ServiceUController::class, 'index'])->name('services');
+    
+});
+
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard',[adminController::class, 'index'])->name('dashboard');
     
@@ -55,12 +75,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/{booking}/complete', [BookingController::class, 'complete'])->name('complete');
    
     });
-    /* Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('index');
-       
-    }); */
-     /** start Users */
-    //Route::get('/index',[UserController::class, 'index'])->name('admin.user');
     
 })->middleware(['auth', 'verified']);
 
@@ -69,7 +83,7 @@ Route::prefix('provider')->name('provider.')->group(function () {
     Route::get('/create', [ServicePController::class, 'create'])->name('create');
     Route::post('/', [ServicePController::class, 'store'])->name('store');
     Route::get('/service', [ServicePController::class, 'service'])->name('service');
-    
+
      
 
 })->middleware(['auth', 'verified']);

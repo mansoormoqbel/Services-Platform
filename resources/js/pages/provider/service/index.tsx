@@ -84,12 +84,12 @@ export default function  Service() {
                                 <td className="p-3">{service.price}</td>
                                 <td className="p-3">{service.is_active}</td>
                                 <td className="p-3 flex gap-3">
-                                    <Link
-                                        /* href={edit(service.id).url} */
+                                    {/* <Link
+                                        href={edit(service.id).url}
                                         className="text-blue-600 hover:underline"
                                     >
                                         Edit
-                                    </Link>
+                                    </Link> */}
                                     {<button
                                         disabled={processing}
                                         onClick={() => handleDelete(service.id)}
